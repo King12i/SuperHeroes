@@ -1,0 +1,45 @@
+>>> from HeroesApp.models import *
+>>> tony_stark = SuperHero.objects.create(real_name="Tony Stark", hero_name="Iron Man", age=48) >>> tony_stark
+Iron Man is actually Tony Stark
+>>> cap = SuperHero.objects.create(real_name="Steve Rogers", hero_name="Captain America", age=93)
+>>> cap
+Captain America is actually Steve Rogers
+>>> thor = SuperHero.objects.create(real_name="Thor Odinson", hero_name="Thor", age=1000)
+>>> yondu = SuperHero.objects.create(real_name="Yondu Udonta", hero_name="Mary Poppins", age=64)
+
+>>> yondu
+Mary Poppins is actually Yondu Udonta
+>>> avengers = SuperTeam.objects.create(team_name="The Avengers", from_where="Earth")
+>>> avengers
+The Avengers
+>>> guardians = SuperTeam.objects.create(team_name="Guardians of the Galaxy", from_where="The Galaxy")
+>>> guardians
+Guardians of the Galaxy
+>>> guardians.__dict__
+{'_state': <django.db.models.base.ModelState object at 0x046F56B0>, 'id': 2, 'team_name': 'Guardians of the Galaxy', 'from_where': 'The Galaxy', 'created_at': datetime.datetime(2020, 3, 11, 18, 15, 30, 674650, tzinfo=<UTC>), 'updated_at': datetime.datetime(2020, 3, 11, 18, 15, 30, 674650, tzinfo=<UTC>)}
+>>> guardians.heroes_on_team.all()
+<QuerySet []>
+>>> yondu.teams_on.all()
+<QuerySet []>
+>>> avengers.heroes_on_team.add(tony_stark)
+>>> avengers.heroes_on_team.all()
+<QuerySet [Iron Man is actually Tony Stark]>
+>>> avengers.heroes_on_team.add(cap)
+>>> avengers.heroes_on_team.add(thor)
+>>> avengers.heroes_on_team.all()
+<QuerySet [Iron Man is actually Tony Stark, Captain America is actually Steve Rogers, Thor is actually Thor Odinson]>
+>>> thor.teams_on.all()
+<QuerySet [The Avengers]>
+>>> thor.teams_on.add(guardians)
+>>> thor.teams_on.all()
+<QuerySet [The Avengers, Guardians of the Galaxy]>
+>>> guardians.heroes_on_team.add(yondu)
+>>> thor.teams_on.all()
+<QuerySet [The Avengers, Guardians of the Galaxy]>
+>>> guardians.heroes_on_team.all()
+<QuerySet [Thor is actually Thor Odinson, Mary Poppins is actually Yondu Udonta]>
+>>> guardians.heroes_on_team.remove(yondu)
+>>> guardians.heroes_on_team.all()
+<QuerySet [Thor is actually Thor Odinson]>
+>>> yondu
+Mary Poppins is actually Yondu Udonta
